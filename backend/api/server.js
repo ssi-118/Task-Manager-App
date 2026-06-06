@@ -3,17 +3,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-const taskRoutes = require('./routes/taskRoutes');
+const taskRoutes = require('../routes/taskRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors({
-    origin: ["https://vercel.app"],
-    methods: ["POST", "GET", "PUT", "DELETE"],
-    credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 
 // Routes
@@ -25,17 +21,19 @@ app.get('/health', (req, res) => {
 });
 
 // Database connection & Server startup
-const mongoUri = process.env.MONGO_URI || process.env.MONGODB_URI;
-
 mongoose
-  .connect(mongoUri)
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('Successfully connected to MongoDB.');
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+      });
+    }
   })
   .catch((err) => {
     console.error('Database connection error:', err.message);
     process.exit(1);
   });
+
+module.exports = app;
