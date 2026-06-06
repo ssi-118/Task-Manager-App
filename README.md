@@ -86,3 +86,8 @@ If not provided, the frontend falls back to `http://localhost:5000`.
 - The backend uses `cors()` to allow requests from the frontend.
 - The frontend uses `axios` to call the backend API.
 - Use `.gitignore` to keep environment files and `node_modules` out of version control.
+
+## Live Demo
+```
+https://task-manager-app-lemon-nine.vercel.app/
+```
